@@ -1,7 +1,7 @@
 {
   "name": "google-sheet-to-json",
   "version": "1.0.0",
-  "description": "Convert a google sheet into readable JSON without the overhead of the official API",
+  "description": "Convert a google sheet into JSON without the overhead of the official API",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

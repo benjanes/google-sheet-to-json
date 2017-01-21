@@ -1,6 +1,6 @@
 const request = require('request');
 
-const googleResponseToJSON = response => {
+const googleResponseToArray = response => {
   let data = response.replace('/*O_o*/\ngoogle.visualization.Query.setResponse(', '');
   data = data.replace(');', '');
   return JSON.parse(data)['table']['rows'];
@@ -35,7 +35,7 @@ module.exports = (sheetId, keys, isColumns) => {
   		if (error) {
         reject(error);
       } else {
-        let data = googleResponseToJSON(response.body);
+        let data = googleResponseToArray(response.body);
         data = mapRowsToKeys(data, keys);
         resolve(JSON.stringify({ data }));
       }
