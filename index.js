@@ -20,8 +20,8 @@ const googleRowToArr = row => {
 };
 
 const mapRowsToKeys = (data, keys) => {
-	keys = keys ? keys : googleRowToArr(data.shift());
-	return data.map(googleRowsToKeyedObjs(keys));
+  keys = keys ? keys : googleRowToArr(data.shift());
+  return data.map(googleRowsToKeyedObjs(keys));
 }
 
 const mapColsToKeys = (data, keys) => {
@@ -29,7 +29,7 @@ const mapColsToKeys = (data, keys) => {
   // then map rows to keys
 }
 
-module.exports = (sheetId, keys, isColumns) => {
+const googleSheetToJSON = (sheetId, keys, isColumns) => {
   return new Promise((resolve, reject) => {
   	request(`https://spreadsheets.google.com/tq?&key=${sheetId}`, (error, response, body) => {
   		if (error) {
@@ -42,3 +42,5 @@ module.exports = (sheetId, keys, isColumns) => {
   	});
   })
 };
+
+module.exports = googleSheetToJSON;
