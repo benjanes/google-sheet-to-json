@@ -1,7 +1,8 @@
 const request = require('request');
 
 const googleResponseToArray = response => {
-  let data = response.replace('/*O_o*/\ngoogle.visualization.Query.setResponse(', '').replace(/\);$/, '');
+  let data = response.replace(/^\/\*O_o\*\/\ngoogle\.visualization\.Query\.setResponse\(/, '').replace(/\);$/, '');
+  console.log(data);
   return JSON.parse(data)['table']['rows'];
 };
 
