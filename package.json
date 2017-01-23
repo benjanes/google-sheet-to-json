@@ -10,5 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3",
+    "rewire": "^2.5.2"
   }
 }
