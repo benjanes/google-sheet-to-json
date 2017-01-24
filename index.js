@@ -2,12 +2,12 @@ const request = require('request');
 
 const googleResponseToArray = response => {
   let data = response.replace(/^\/\*O_o\*\/\ngoogle\.visualization\.Query\.setResponse\(/, '').replace(/\);$/, '');
-  return JSON.parse(data)['table']['rows'];
+  return JSON.parse(data)['table']['rows'].map(row => row.c);
 };
 
 const googleRowsToKeyedObjs = keys => {
   return row => {
-    return row['c'].reduce((obj, val, idx) => {
+    return row.reduce((obj, val, idx) => {
       if (val.v) obj[keys[idx]] = val.v;
       return obj;
     }, {});
@@ -15,7 +15,7 @@ const googleRowsToKeyedObjs = keys => {
 };
 
 const googleRowToArr = row => {
-  return row['c'].map(obj => { return obj ? obj.v : null });
+  return row.map(obj => { return obj ? obj.v : null });
 };
 
 const mapRowsToKeys = (data, keys) => {
@@ -25,7 +25,18 @@ const mapRowsToKeys = (data, keys) => {
 
 const mapColsToKeys = (data, keys) => {
   // rotate data array
+  data = data.reduce((rotatedData, row, rowIdx) => {
+    row.forEach((item, colIdx) => {
+      if (rotatedData.length <= colIdx) {
+        rotatedData.push([]);
+      }
+      rotatedData[colIdx].push(item);
+    });
+    return rotatedData;
+  }, []);
+  
   // then map rows to keys
+  return mapRowsToKeys(data, keys);
 }
 
 const googleSheetToJSON = (sheetId, keys, isColumns) => {
