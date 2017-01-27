@@ -7,10 +7,6 @@ const googleResponseToArray = response => {
 
 const googleRowsToKeyedObjs = keys => {
   return row => {
-
-    // exit out
-    if (keys.length < row.length) return console.error('Must supply as many keys as there are items in a row');
-
     return row.reduce((obj, val, idx) => {
       if (val.v) obj[keys[idx]] = val.v;
       return obj;
@@ -24,9 +20,6 @@ const googleRowToArr = row => {
 };
 
 const mapRowsToKeys = (data, keys) => {
-  // exit out
-  if (keys && !Array.isArray(keys)) return console.error('Supplied keys must be an array');
-  
   keys = keys ? keys : googleRowToArr(data.shift());
   return data.map(googleRowsToKeyedObjs(keys));
 }
@@ -50,7 +43,13 @@ const googleSheetToJSON = (sheetId, isColumns, keys) => {
   		if (error) {
         reject(error);
       } else {
-        data = mappingFn(googleResponseToArray(response.body), keys);
+        if (keys && !Array.isArray(keys)) reject('Supplied keys must be an array');
+
+        let data = googleResponseToArray(response.body);
+
+        if (keys && data.filter(row => row.length > keys.length).length) reject('Must supply as many keys as there are items in a row');
+
+        data = mappingFn(data, keys);
         resolve(JSON.stringify({ data }));
       }
   	});
