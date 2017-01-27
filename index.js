@@ -24,29 +24,25 @@ const mapRowsToKeys = (data, keys) => {
 }
 
 const mapColsToKeys = (data, keys) => {
-  // rotate data array
   data = data.reduce((rotatedData, row, rowIdx) => {
     row.forEach((item, colIdx) => {
-      if (rotatedData.length <= colIdx) {
-        rotatedData.push([]);
-      }
+      if (rotatedData.length <= colIdx) rotatedData.push([]);
       rotatedData[colIdx].push(item);
     });
     return rotatedData;
   }, []);
-  
-  // then map rows to keys
+
   return mapRowsToKeys(data, keys);
 }
 
-const googleSheetToJSON = (sheetId, keys, isColumns) => {
+const googleSheetToJSON = (sheetId, isColumns, keys) => {
+  const mappingFn = isColumns ? mapColsToKeys : mapRowsToKeys;
   return new Promise((resolve, reject) => {
-  	request(`https://spreadsheets.google.com/tq?&key=${sheetId}`, (error, response, body) => {
+  	request(`https://spreadsheets.google.com/tq?&key=${sheetId}`, (error, response) => {
   		if (error) {
         reject(error);
       } else {
-        let data = googleResponseToArray(response.body);
-        data = mapRowsToKeys(data, keys);
+        data = mappingFn(googleResponseToArray(response.body), keys);
         resolve(JSON.stringify({ data }));
       }
   	});
