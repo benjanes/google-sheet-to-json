@@ -7,6 +7,10 @@ const googleResponseToArray = response => {
 
 const googleRowsToKeyedObjs = keys => {
   return row => {
+
+    // exit out
+    if (keys.length < row.length) return console.error('Must supply as many keys as there are items in a row');
+
     return row.reduce((obj, val, idx) => {
       if (val.v) obj[keys[idx]] = val.v;
       return obj;
@@ -15,10 +19,14 @@ const googleRowsToKeyedObjs = keys => {
 };
 
 const googleRowToArr = row => {
+  // might need to switch check from obj to obj.v
   return row.map(obj => { return obj ? obj.v : null });
 };
 
 const mapRowsToKeys = (data, keys) => {
+  // exit out
+  if (keys && !Array.isArray(keys)) return console.error('Supplied keys must be an array');
+  
   keys = keys ? keys : googleRowToArr(data.shift());
   return data.map(googleRowsToKeyedObjs(keys));
 }
