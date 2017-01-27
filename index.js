@@ -47,7 +47,8 @@ const googleSheetToJSON = (sheetId, isColumns, keys) => {
 
         let data = googleResponseToArray(response.body);
 
-        if (keys && data.filter(row => row.length > keys.length).length) reject('Must supply as many keys as there are items in a row');
+        if (keys && !isColumns && data.filter(row => row.length > keys.length).length) reject('Must supply as many keys as there are items in a row');
+        if (keys && isColumns && data.length > keys.length) reject('Must supply as many keys as there are items in a column');
 
         data = mappingFn(data, keys);
         resolve(JSON.stringify({ data }));
