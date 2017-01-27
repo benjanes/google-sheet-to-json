@@ -57,9 +57,7 @@ describe('googleRowsToKeyedObjs', () => {
 
 	});
 
-	it('should error if the keys argument array does not have at least as many members as the row passed to the return function', () => {
-
-	});
+	
 
 	it('should have as many keys in the return object as there were valid row members passed', () => {
 
@@ -75,10 +73,6 @@ describe('mapRowsToKeys', () => {
 		expect(privateFns.mapRowsToKeys).toBeDefined();
 	});
 
-	it('should error if the keys argument is passed and is not an array', () => {
-
-	});
-
 	it('should return an array of objects', () => {
 
 	});
@@ -87,5 +81,35 @@ describe('mapRowsToKeys', () => {
 
 	});
 });
+
+describe('mapColsToKeys', () => {
+	it('should be defined', () => {
+		expect(privateFns.mapColsToKeys).toBeDefined();
+	});
+
+	it('should return an array of objects', () => {
+
+	});
+
+	it('should return an array of length equal to the longest (row) length of the members of the array passed as an argument', () => {
+
+	});
+});
+
+
+describe('gSheet', () => {
+	it('should error if the keys argument is passed and is not an array', () => {
+
+	});
+
+	it('should error if using rows and the keys argument array does not have at least as many members as the longest row in the data set array', () => {
+
+	});
+
+	it('should error if using columns and the keys argument array does not have at least as many members as data set array', () => {
+
+	});
+});
+
 
 
